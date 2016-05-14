@@ -14,17 +14,22 @@ class Main {
 // return:
 // `
 // ' '
-//   '_'
+//   '__'
 //     the
-//     art
+//     '_'
+//       a
+//       r
+//       t
 //   of
-//   '--'
+//   '_'
 //     '-'
 //       com
-//       puter
+//       pu
+//       ter
 //     '-'
-//       programm
-//       ing
+//       pro
+//       gram
+//       ming
 // `
   }
 }
