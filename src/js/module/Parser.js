@@ -1,8 +1,12 @@
 import CharacterTree from './CharacterTree';
 
+const defaults = {
+  priority: [' '],
+}
+
 export default class Parser {
   constructor(opts = {}) {
-    this.priority = opts.priority;
+    this.priority = opts.priority || defaults.priority;
   }
 
   parse(str) {
@@ -35,6 +39,8 @@ export default class Parser {
       let tmp = this.next(node, delimiterArr.slice(1));
       ret.push(tmp);
     });
+
+    ret.delimiter = delimiterArr[0];
 
     return ret;
   }

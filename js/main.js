@@ -16,12 +16,28 @@ var Main = function Main() {
 
   _classCallCheck(this, Main);
 
-  var $_$ = new _Kane2.default();
+  this.kane = new _Kane2.default();
+  var $_$ = this.kane;
 
-  var ret = $_$('the__a_r_t of com-pu-ter_pro-gram-ming', {
+  var text = 'the__a_r_t of com-pu-ter_pro-gram-ming';
+
+  var parsed = $_$.parse(text, {
     priority: [' ', '_', '-']
   });
-  console.log(ret);
+
+  console.log(parsed);
+
+  var renderedJson = $_$.render(parsed, {
+    format: 'json'
+  });
+
+  console.log(renderedJson);
+
+  var renderedIndent = $_$.render(parsed, {
+    format: 'indent'
+  });
+
+  console.log(renderedIndent);
 
   // return:
   // `
@@ -181,39 +197,51 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _Parser = require('./Parser.js');
 
 var _Parser2 = _interopRequireDefault(_Parser);
+
+var _Renderer = require('./Renderer.js');
+
+var _Renderer2 = _interopRequireDefault(_Renderer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var defaults = {
-  priority: [' ']
-};
+var Kane = function () {
+  function Kane() {
+    var opts = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-var Kane = function Kane() {
-  var opts = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+    _classCallCheck(this, Kane);
+  }
 
-  _classCallCheck(this, Kane);
+  _createClass(Kane, [{
+    key: 'parse',
+    value: function parse(expr) {
+      var opts = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-  return function (expr) {
-    var opts = arguments.length <= 1 || arguments[1] === undefined ? { priority: defaults.priority } : arguments[1];
+      var parser = new _Parser2.default(opts);
+      return parser.parse(expr);
+    }
+  }, {
+    key: 'render',
+    value: function render(expr) {
+      var opts = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-    var parser = new _Parser2.default({
-      priority: opts.priority
-    });
+      var renderer = new _Renderer2.default(opts);
+      return renderer.render(expr);
+    }
+  }]);
 
-    var ret = parser.parse(expr);
-
-    return ret;
-  };
-};
+  return Kane;
+}();
 
 exports.default = Kane;
 
-},{"./Parser.js":4}],4:[function(require,module,exports){
+},{"./Parser.js":4,"./Renderer.js":5}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -230,13 +258,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var defaults = {
+  priority: [' ']
+};
+
 var Parser = function () {
   function Parser() {
     var opts = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
     _classCallCheck(this, Parser);
 
-    this.priority = opts.priority;
+    this.priority = opts.priority || defaults.priority;
   }
 
   _createClass(Parser, [{
@@ -266,7 +298,6 @@ var Parser = function () {
       var branch = characterTree.branch(str);
 
       if (typeof branch === 'string') {
-        console.log(branch, str);
         ret = this.next(str, delimiterArr.slice(1));
         return ret;
       }
@@ -275,6 +306,8 @@ var Parser = function () {
         var tmp = _this.next(node, delimiterArr.slice(1));
         ret.push(tmp);
       });
+
+      ret.delimiter = delimiterArr[0];
 
       return ret;
     }
@@ -285,4 +318,80 @@ var Parser = function () {
 
 exports.default = Parser;
 
-},{"./CharacterTree":2}]},{},[1]);
+},{"./CharacterTree":2}],5:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Renderer = function () {
+  function Renderer() {
+    var opts = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+    _classCallCheck(this, Renderer);
+
+    this.format = opts.format;
+  }
+
+  _createClass(Renderer, [{
+    key: 'render',
+    value: function render(kane) {
+      var ret = void 0;
+
+      if (this.format == null) {} else if (this.format === 'json') {
+        ret = this.renderJson(kane);
+      } else if (this.format === 'indent') {
+        ret = this.renderIndent(kane);
+      }
+
+      return ret;
+    }
+  }, {
+    key: 'renderJson',
+    value: function renderJson(kane) {
+      return JSON.stringify(kane);
+    }
+  }, {
+    key: 'renderIndent',
+    value: function renderIndent(kane) {
+      var TAB = '  ';
+      var ret = '';
+
+      next(kane, 0);
+      return ret;
+
+      function next(expr, depth) {
+        if (typeof expr === 'string') {
+          ret += tabs(depth) + expr + '\n';
+        } else {
+          ret += tabs(depth) + ('\'' + expr.delimiter + '\'') + '\n';
+          expr.forEach(function (elm) {
+            next(elm, depth + 1);
+          });
+        }
+      }
+
+      function tabs(len) {
+        var ret = '';
+        var i = void 0;
+
+        for (i = 0; i < len; i++) {
+          ret += TAB;
+        }
+
+        return ret;
+      }
+    }
+  }]);
+
+  return Renderer;
+}();
+
+exports.default = Renderer;
+
+},{}]},{},[1]);

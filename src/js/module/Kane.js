@@ -1,19 +1,17 @@
 import Parser from './Parser.js';
-
-const defaults = {
-  priority: [' '],
-}
+import Renderer from './Renderer.js';
 
 export default class Kane {
   constructor(opts = {}) {
-    return (expr, opts = {priority: defaults.priority}) => {
-      const parser = new Parser({
-        priority: opts.priority,
-      });
+  }
 
-      var ret = parser.parse(expr);
+  parse(expr, opts = {}) {
+    const parser = new Parser(opts);
+    return parser.parse(expr);
+  }
 
-      return ret;
-    };
+  render(expr, opts = {}) {
+    const renderer = new Renderer(opts);
+    return renderer.render(expr);
   }
 }
