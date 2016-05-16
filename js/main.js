@@ -26,17 +26,22 @@ var Main = function Main() {
   // return:
   // `
   // ' '
-  //   '_'
+  //   '__'
   //     the
-  //     art
+  //     '_'
+  //       a
+  //       r
+  //       t
   //   of
-  //   '--'
+  //   '_'
   //     '-'
   //       com
-  //       puter
+  //       pu
+  //       ter
   //     '-'
-  //       programm
-  //       ing
+  //       pro
+  //       gram
+  //       ming
   // `
 };
 
@@ -253,7 +258,6 @@ var Parser = function () {
       }
 
       var characterTree = new _CharacterTree2.default({
-        // delimiter: delimiterArr.shift(),
         delimiter: delimiterArr[0]
       });
 
@@ -262,6 +266,7 @@ var Parser = function () {
       var branch = characterTree.branch(str);
 
       if (typeof branch === 'string') {
+        console.log(branch, str);
         ret = this.next(str, delimiterArr.slice(1));
         return ret;
       }

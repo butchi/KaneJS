@@ -19,7 +19,6 @@ export default class Parser {
     }
 
     const characterTree = new CharacterTree({
-      // delimiter: delimiterArr.shift(),
       delimiter: delimiterArr[0],
     });
 
