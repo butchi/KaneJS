@@ -40,7 +40,7 @@ export default class Parser {
       ret.push(tmp);
     });
 
-    ret.delimiter = delimiterArr[0];
+    ret.delimiter = delimiterArr[0]; // 本来のデリミターを使いたい
 
     return ret;
   }

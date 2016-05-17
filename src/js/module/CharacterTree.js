@@ -79,6 +79,7 @@ class CharacterTree {
       this.splitStr(str).forEach((elm) => {
         ret.push(this.branch(elm));
       });
+      ret.delimiter = this.delimiter;
     } else {
       ret = str;
     }

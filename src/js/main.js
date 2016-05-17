@@ -26,6 +26,8 @@ class Main {
     });
 
     console.log(renderedIndent);
+
+    global.$_$ = $_$;
   }
 }
 
