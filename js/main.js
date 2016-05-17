@@ -19,7 +19,7 @@ var Main = function Main() {
   this.kane = new _Kane2.default();
   var $_$ = this.kane;
 
-  var text = 'the__a_r_t of com-pu-ter_pro-gram-ming';
+  var text = 'the__a_r_t of com-pu--ter_pro-gram--ming';
 
   var parsed = $_$.parse(text, {
     priority: [' ', '_', '-']
@@ -38,27 +38,6 @@ var Main = function Main() {
   });
 
   console.log(renderedIndent);
-
-  // return:
-  // `
-  // ' '
-  //   '__'
-  //     the
-  //     '_'
-  //       a
-  //       r
-  //       t
-  //   of
-  //   '_'
-  //     '-'
-  //       com
-  //       pu
-  //       ter
-  //     '-'
-  //       pro
-  //       gram
-  //       ming
-  // `
 };
 
 window.licker = window.licker || {};
@@ -298,7 +277,7 @@ var Parser = function () {
       var branch = characterTree.branch(str);
 
       if (typeof branch === 'string') {
-        ret = this.next(str, delimiterArr.slice(1));
+        ret = branch;
         return ret;
       }
 

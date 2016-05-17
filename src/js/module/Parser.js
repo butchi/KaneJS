@@ -31,7 +31,7 @@ export default class Parser {
     let branch = characterTree.branch(str);
 
     if(typeof branch === 'string') {
-      ret = this.next(str, delimiterArr.slice(1));
+      ret = branch;
       return ret;
     }
 

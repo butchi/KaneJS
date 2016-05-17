@@ -7,7 +7,7 @@ class Main {
     this.kane = new Kane();
     const $_$ = this.kane;
 
-    var text = 'the__a_r_t of com-pu-ter_pro-gram-ming';
+    var text = 'the__a_r_t of com-pu--ter_pro-gram--ming';
 
     var parsed = $_$.parse(text, {
       priority: [' ', '_', '-'],
