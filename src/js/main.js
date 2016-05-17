@@ -26,27 +26,6 @@ class Main {
     });
 
     console.log(renderedIndent);
-
-// return:
-// `
-// ' '
-//   '__'
-//     the
-//     '_'
-//       a
-//       r
-//       t
-//   of
-//   '_'
-//     '-'
-//       com
-//       pu
-//       ter
-//     '-'
-//       pro
-//       gram
-//       ming
-// `
   }
 }
 
