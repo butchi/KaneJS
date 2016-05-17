@@ -34,6 +34,14 @@ var Main = function Main() {
 
   console.log(renderedJson);
 
+  var renderedHtml = $_$.render(parsed, {
+    format: 'html'
+  });
+
+  $(function () {
+    $('.rendered').html(renderedHtml);
+  });
+
   var renderedIndent = $_$.render(parsed, {
     format: 'indent'
   });
@@ -60,6 +68,12 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _Util = require('./Util');
+
+var _Util2 = _interopRequireDefault(_Util);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 // from https://github.com/butchi/markright
@@ -74,42 +88,6 @@ var CharacterTree = function () {
   }
 
   _createClass(CharacterTree, [{
-    key: 'html',
-    value: function html(str) {
-      var ret;
-      var arr;
-
-      arr = this.branch(str);
-      ret = this.render(arr);
-
-      return ret;
-    }
-  }, {
-    key: 'render',
-    value: function render(tree) {
-      var _this = this;
-
-      var ret = '';
-      var tmp;
-
-      tree.forEach(function (elm) {
-        if (typeof elm === 'string') {
-          tmp = elm;
-        } else {
-          tmp = _this.render(elm);
-        }
-
-        ret += _this.wrap(tmp);
-      });
-
-      return ret;
-    }
-  }, {
-    key: 'wrap',
-    value: function wrap(str) {
-      return '<span>' + str + '</span>';
-    }
-  }, {
     key: 'splitStr',
     value: function splitStr(str) {
       var res;
@@ -129,36 +107,19 @@ var CharacterTree = function () {
         longest = Math.max(longest, longTmp);
       }
 
-      res = str.split(this.constantSpace(longest));
+      res = str.split(_Util2.default.constantSpace(longest, this.delimiter));
 
       return res;
     }
   }, {
-    key: 'constantSpace',
-    value: function constantSpace(len) {
-      var ret = '';
-      var i = void 0;
-
-      for (i = 0; i < len; i++) {
-        ret += this.delimiter;
-      }
-
-      return ret;
-    }
-  }, {
-    key: 'sameArrQ',
-    value: function sameArrQ(arr1, arr2) {
-      return JSON.stringify(arr1) === JSON.stringify(arr2);
-    }
-  }, {
     key: 'branch',
     value: function branch(str) {
-      var _this2 = this;
+      var _this = this;
 
       var ret = [];
       if (str.indexOf(this.delimiter) !== -1) {
         this.splitStr(str).forEach(function (elm) {
-          ret.push(_this2.branch(elm));
+          ret.push(_this.branch(elm));
         });
         ret.delimiter = this.delimiter;
       } else {
@@ -174,7 +135,7 @@ var CharacterTree = function () {
 
 exports.default = CharacterTree;
 
-},{}],3:[function(require,module,exports){
+},{"./Util":6}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -311,6 +272,12 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _Util = require('./Util');
+
+var _Util2 = _interopRequireDefault(_Util);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Renderer = function () {
@@ -329,6 +296,8 @@ var Renderer = function () {
 
       if (this.format == null) {} else if (this.format === 'json') {
         ret = this.renderJson(kane);
+      } else if (this.format === 'html') {
+        ret = this.renderHtml(kane);
       } else if (this.format === 'indent') {
         ret = this.renderIndent(kane);
       }
@@ -339,6 +308,26 @@ var Renderer = function () {
     key: 'renderJson',
     value: function renderJson(kane) {
       return JSON.stringify(kane);
+    }
+  }, {
+    key: 'renderHtml',
+    value: function renderHtml(kane) {
+      var _this = this;
+
+      var ret = '';
+      var tmp;
+
+      kane.forEach(function (elm) {
+        if (typeof elm === 'string') {
+          tmp = elm;
+        } else {
+          tmp = _this.render(elm);
+        }
+
+        ret += _Util2.default.wrapHtml(tmp);
+      });
+
+      return ret;
     }
   }, {
     key: 'renderIndent',
@@ -377,5 +366,37 @@ var Renderer = function () {
 }();
 
 exports.default = Renderer;
+
+},{"./Util":6}],6:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = {
+  wrapHtml: function wrapHtml(str) {
+    var opts = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+    var tagName = opts.tagName || 'span';
+    return '<' + tagName + '>' + str + '</' + tagName + '>';
+  },
+
+  constantSpace: function constantSpace(len) {
+    var spaceStr = arguments.length <= 1 || arguments[1] === undefined ? ' ' : arguments[1];
+
+    var ret = '';
+    var i = void 0;
+
+    for (i = 0; i < len; i++) {
+      ret += spaceStr;
+    }
+
+    return ret;
+  },
+
+  sameArrQ: function sameArrQ(arr1, arr2) {
+    return JSON.stringify(arr1) === JSON.stringify(arr2);
+  }
+};
 
 },{}]},{},[1]);
