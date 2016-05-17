@@ -21,6 +21,14 @@ class Main {
 
     console.log(renderedJson);
 
+    var renderedHtml = $_$.render(parsed, {
+      format: 'html',
+    });
+
+    $(() => {
+      $('.rendered').html(renderedHtml);
+    });
+
     var renderedIndent = $_$.render(parsed, {
       format: 'indent',
     });

@@ -1,38 +1,9 @@
+import Util from './Util';
+
 // from https://github.com/butchi/markright
 class CharacterTree {
   constructor(opts = {}) {
     this.delimiter = opts.delimiter || ' ';
-  }
-
-  html(str) {
-    var ret;
-    var arr;
-
-    arr = this.branch(str);
-    ret = this.render(arr);
-
-    return ret;
-  }
-
-  render(tree) {
-    var ret = '';
-    var tmp;
-
-    tree.forEach((elm) => {
-      if(typeof elm === 'string') {
-        tmp = elm;
-      } else {
-        tmp = this.render(elm);
-      }
-
-      ret += this.wrap(tmp);
-    });
-
-    return ret;
-  }
-
-  wrap(str) {
-    return `<span>${str}</span>`;
   }
 
   splitStr(str) {
@@ -53,24 +24,9 @@ class CharacterTree {
       longest = Math.max(longest, longTmp);
     }
 
-    res = str.split(this.constantSpace(longest));
+    res = str.split(Util.constantSpace(longest, this.delimiter));
 
     return res;
-  }
-
-  constantSpace(len) {
-    var ret = '';
-    let i;
-
-    for(i = 0; i < len; i++) {
-      ret += this.delimiter;
-    }
-
-    return ret;
-  }
-
-  sameArrQ(arr1, arr2) {
-    return JSON.stringify(arr1) === JSON.stringify(arr2);
   }
 
   branch(str) {

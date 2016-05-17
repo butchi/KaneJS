@@ -1,3 +1,5 @@
+import Util from './Util';
+
 export default class Renderer {
   constructor(opts = {}) {
     this.format = opts.format;
@@ -9,6 +11,8 @@ export default class Renderer {
     if(this.format == null) {
     } else if(this.format === 'json') {
       ret = this.renderJson(kane);
+    } else if(this.format === 'html') {
+      ret = this.renderHtml(kane);
     } else if(this.format === 'indent') {
       ret = this.renderIndent(kane);
     }
@@ -18,6 +22,23 @@ export default class Renderer {
 
   renderJson(kane) {
     return JSON.stringify(kane);
+  }
+
+  renderHtml(kane) {
+    var ret = '';
+    var tmp;
+
+    kane.forEach((elm) => {
+      if(typeof elm === 'string') {
+        tmp = elm;
+      } else {
+        tmp = this.render(elm);
+      }
+
+      ret += Util.wrapHtml(tmp);
+    });
+
+    return ret;
   }
 
   renderIndent(kane) {
