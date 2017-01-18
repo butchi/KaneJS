@@ -2,64 +2,24 @@
 (function (global){
 'use strict';
 
-var _Kane = require('./module/Kane.js');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var _Kane2 = _interopRequireDefault(_Kane);
+var _Main = require('./module/Main.js');
+
+var _Main2 = _interopRequireDefault(_Main);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var Kane = new _Main2.default();
 
-console.log('Hello, world!');
-
-var Main = function Main() {
-  var opts = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-  _classCallCheck(this, Main);
-
-  this.kane = new _Kane2.default();
-  var $_$ = this.kane;
-
-  var text = 'the__a_r_t of com-pu--ter_pro-gram--ming';
-
-  var parsed = $_$.parse(text, {
-    priority: [' ', '_', '-']
-  });
-
-  console.log(parsed);
-
-  var renderedJson = $_$.render(parsed, {
-    format: 'json'
-  });
-
-  console.log(renderedJson);
-
-  var renderedHtml = $_$.render(parsed, {
-    format: 'html'
-  });
-
-  $(function () {
-    $('.rendered').html(renderedHtml);
-  });
-
-  var renderedIndent = $_$.render(parsed, {
-    format: 'indent'
-  });
-
-  console.log(renderedIndent);
-
-  global.$_$ = $_$;
-};
-
-window.licker = window.licker || {};
-(function (ns) {
-  ns.main = new Main();
-})(window.licker);
-
-console.log('Thanks, world!');
+global.kane = Kane;
+global.$_$ = Kane;
+exports.default = Kane;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./module/Kane.js":3}],2:[function(require,module,exports){
+},{"./module/Main.js":3}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -77,10 +37,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 // from https://github.com/butchi/markright
-
 var CharacterTree = function () {
   function CharacterTree() {
-    var opts = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
     _classCallCheck(this, CharacterTree);
 
@@ -158,7 +117,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var Kane = function () {
   function Kane() {
-    var opts = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
     _classCallCheck(this, Kane);
   }
@@ -166,7 +125,7 @@ var Kane = function () {
   _createClass(Kane, [{
     key: 'parse',
     value: function parse(expr) {
-      var opts = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+      var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
       var parser = new _Parser2.default(opts);
       return parser.parse(expr);
@@ -174,7 +133,7 @@ var Kane = function () {
   }, {
     key: 'render',
     value: function render(expr) {
-      var opts = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+      var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
       var renderer = new _Renderer2.default(opts);
       return renderer.render(expr);
@@ -209,7 +168,7 @@ var defaults = {
 
 var Parser = function () {
   function Parser() {
-    var opts = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
     _classCallCheck(this, Parser);
 
@@ -282,7 +241,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var Renderer = function () {
   function Renderer() {
-    var opts = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
     _classCallCheck(this, Renderer);
 
@@ -375,14 +334,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
   wrapHtml: function wrapHtml(str) {
-    var opts = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+    var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     var tagName = opts.tagName || 'span';
     return '<' + tagName + '>' + str + '</' + tagName + '>';
   },
 
   constantSpace: function constantSpace(len) {
-    var spaceStr = arguments.length <= 1 || arguments[1] === undefined ? ' ' : arguments[1];
+    var spaceStr = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ' ';
 
     var ret = '';
     var i = void 0;
